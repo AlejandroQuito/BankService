@@ -1,0 +1,79 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${DB_NAME:postgres}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          batch_size: 100
+          order_inserts: true
+          batch_versioned_data: false
+
+  data:
+    redis:
+      password: ${REDIS_PASSWORD:password}
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+  cache:
+    type: redis
+    time-to-live: 86400
+
+  security:
+    jwt:
+      access-secret: ${JWT_ACCESS_SECRET:a78c7e3ad8f446d9b6156a67b40b9dc28fa1d9ce72d884a195347d5b13886ad9}
+      access-lifetime: 600000
+      refresh-secret: ${JWT_REFRESH_SECRET:wenuiuweiGUYGYUVHBXWS112jBUIWCIOJBHJIHtdfGygioiHy6d78dsdffsd3234}
+      refresh-lifetime: 86400000
+      auth-header: ${JWT_AUTH_HEADER:Authorization}
+      bearer-prefix: ${JWT_BEARER_PREFIX:Bearer }
+      ignored-paths: ${JWT_IGNORED_PATHS:/v1/auth/**}
+      password-encoder-number-of-iterations: ${PASSWORD_ENCODER_ITERATIONS:12}
+
+  elasticsearch:
+    client:
+      host: localhost
+      port: 9200
+
+server:
+  port: ${SERVER_PORT:8082}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH:/bank/service/api}
+
+async:
+  thread-pool:
+    batch-size: 500
+    size: 25
+    queue-capacity: 100
+
+app:
+  interest:
+    multiplier: 1.10
+    max-ratio: 2.07
+
+scheduler:
+  increase-balance-cron: "0/30 * * * * *"
+
+logging:
+  level:
+#    root: DEBUG
+#    org.springframework.web: DEBUG      # Логирование запросов и ответов контроллеров
+#    org.springframework.security: DEBUG # Если используешь Security
+#    org.hibernate.SQL: DEBUG            # SQL-запросы Hibernate
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # Параметры в SQL
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: error
+    org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
