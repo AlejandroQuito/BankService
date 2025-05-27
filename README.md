@@ -10,6 +10,7 @@
 - JWT (JSON Web Token)
 - MapStruct
 - Elasticsearch
+- Liquibase
 - Maven
 - Docker + Docker Compose
 
@@ -49,6 +50,8 @@ docker-compose down
 ```
 
 Для изменения настроек (например, портов или параметров БД) можно отредактировать файл docker-compose.yml или файл конфигурации .env
+
+Миграции таблиц и тестовых данных происходят через Liquibase.
 
 Если хотите запустить приложение без Docker, предварительно настройте локальную базу данных PostgreSQL, Redis и Elasticsearch, а затем запустите приложение из IDE.
 

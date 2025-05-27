@@ -12,14 +12,15 @@ import org.mapstruct.MappingTarget;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring",
         uses = {AccountMapper.class, EmailMapper.class, PhoneMapper.class})
 public interface UserMapper {
 
     @Mapping(target = "account", source = "account")
-    @Mapping(target = "emails", source = "emails")
-    @Mapping(target = "phones", source = "phones")
+    @Mapping(target = "emails", expression = "java(mapEmailsToStringList(user.getEmails()))")
+    @Mapping(target = "phones", expression = "java(mapPhonesToStringList(user.getPhones()))")
     @Mapping(target = "dateOfBirth", source = "dateOfBirth")
     UserResponseDTO toDto(User user);
 
@@ -45,6 +46,22 @@ public interface UserMapper {
         PhoneData phoneData = new PhoneData();
         phoneData.setPhone(phone);
         return List.of(phoneData);
+    }
+
+    default List<String> mapEmailsToStringList(List<EmailData> emails) {
+        if (emails == null) return Collections.emptyList();
+
+        return emails.stream()
+                .map(EmailData::getEmail)
+                .collect(Collectors.toList());
+    }
+
+    default List<String> mapPhonesToStringList(List<PhoneData> phones) {
+        if (phones == null) return Collections.emptyList();
+
+        return phones.stream()
+                .map(PhoneData::getPhone)
+                .collect(Collectors.toList());
     }
 
     @AfterMapping
