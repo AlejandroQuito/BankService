@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface EmailMapper {
+
+    @Mapping(target = "id", source = "id")
     EmailResponseDTO toDto(EmailData emailData);
 
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true)
     EmailData toEntity(EmailRequestDTO emailRequestDTO);
 
     default List<String> mapEmails(List<EmailData> emails) {

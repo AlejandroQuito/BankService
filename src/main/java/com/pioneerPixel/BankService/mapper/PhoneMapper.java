@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface PhoneMapper {
+
+    @Mapping(target = "id", source = "id")
     PhoneResponseDTO toDto(PhoneData phoneData);
 
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true)
     PhoneData toEntity(PhoneRequestDTO phoneRequestDTO);
 
     default List<String> mapPhones(List<PhoneData> phones) {

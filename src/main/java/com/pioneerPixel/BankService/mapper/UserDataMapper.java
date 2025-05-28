@@ -19,6 +19,7 @@ public interface UserDataMapper {
     @Mapping(target = "phones", expression = "java(mapPhones(user.getPhones()))")
     UserData toUserData(User user);
 
+    @Mapping(target = "account", ignore = true)
     UserResponseDTO toUserResponseDTO(UserData userData);
 
     default List<String> mapEmails(List<EmailData> emailData) {

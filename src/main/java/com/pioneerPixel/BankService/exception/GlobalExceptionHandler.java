@@ -1,6 +1,5 @@
 package com.pioneerPixel.BankService.exception;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.security.auth.message.AuthException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +34,11 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage()));
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(EntityNotFoundException ex) {
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            AccountNotFoundException.class
+    })
+    public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
     }
@@ -45,7 +47,8 @@ public class GlobalExceptionHandler {
             EmailAlreadyExistsException.class,
             PhoneAlreadyExistsException.class,
             LastEmailDeletionException.class,
-            LastPhoneDeletionException.class
+            LastPhoneDeletionException.class,
+            InsufficientFundsException.class
     })
     public ResponseEntity<ErrorResponse> handleBusinessExceptions(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)

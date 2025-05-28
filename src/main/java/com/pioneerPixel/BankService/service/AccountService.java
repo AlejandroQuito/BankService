@@ -2,8 +2,9 @@ package com.pioneerPixel.BankService.service;
 
 import com.pioneerPixel.BankService.config.InterestConfig;
 import com.pioneerPixel.BankService.entity.Account;
+import com.pioneerPixel.BankService.exception.AccountNotFoundException;
+import com.pioneerPixel.BankService.exception.InsufficientFundsException;
 import com.pioneerPixel.BankService.repository.AccountRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final InterestConfig interestConfig;
 
+    @Transactional(readOnly = true)
     public BigDecimal getBalance(Long userId) {
         return getAccount(userId).getBalance();
     }
@@ -35,7 +37,7 @@ public class AccountService {
         validateAmountPositive(amount);
         Account account = getAccount(userId);
         if (account.getBalance().compareTo(amount) < 0) {
-            throw new IllegalStateException("Insufficient funds");
+            throw new InsufficientFundsException("Insufficient funds");
         }
         account.setBalance(account.getBalance().subtract(amount));
     }
@@ -51,7 +53,7 @@ public class AccountService {
         Account toAccount = getAccount(toUserId);
 
         if (fromAccount.getBalance().compareTo(amount) < 0) {
-            throw new IllegalStateException("Insufficient funds");
+            throw new InsufficientFundsException("Insufficient funds");
         }
 
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
@@ -84,6 +86,6 @@ public class AccountService {
 
     private Account getAccount(Long userId) {
         return accountRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found for userId: " + userId));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found for userId: " + userId));
     }
 }
