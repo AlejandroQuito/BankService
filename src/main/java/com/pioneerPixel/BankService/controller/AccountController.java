@@ -2,8 +2,10 @@ package com.pioneerPixel.BankService.controller;
 
 import com.pioneerPixel.BankService.security.CustomUserDetails;
 import com.pioneerPixel.BankService.service.AccountService;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/v1/accounts")
+@Validated
 @RequiredArgsConstructor
 public class AccountController {
 
@@ -28,14 +31,14 @@ public class AccountController {
     @PostMapping("/deposit")
     public void deposit(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestParam BigDecimal amount) {
+            @RequestParam @Min(value = 0, message = "Amount must be positive") BigDecimal amount) {
         accountService.deposit(userDetails.getId(), amount);
     }
 
     @PostMapping("/withdraw")
     public void withdraw(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestParam BigDecimal amount) {
+            @RequestParam @Min(value = 0, message = "Amount must be positive") BigDecimal amount) {
         accountService.withdraw(userDetails.getId(), amount);
     }
 
@@ -43,7 +46,7 @@ public class AccountController {
     public void transfer(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam Long recipientUserId,
-            @RequestParam BigDecimal amount) {
+            @RequestParam @Min(value = 0, message = "Amount must be positive") BigDecimal amount) {
         accountService.transfer(userDetails.getId(), recipientUserId, amount);
     }
 }

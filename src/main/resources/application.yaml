@@ -68,11 +68,11 @@ scheduler:
 
 logging:
   level:
-    root: DEBUG
-    org.springframework.web: DEBUG       # Логирование запросов и ответов контроллеров
-    org.springframework.security: DEBUG  # Security
-#    org.hibernate.SQL: DEBUG            # SQL-запросы Hibernate
-#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # Параметры в SQL
+    #    root: DEBUG
+    #    org.springframework.web: DEBUG       # Логирование запросов и ответов контроллеров
+    #    org.springframework.security: DEBUG  # Security
+    #    org.hibernate.SQL: DEBUG            # SQL-запросы Hibernate
+    #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # Параметры в SQL
     org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: error
     org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport: WARN
   pattern:
