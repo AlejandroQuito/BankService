@@ -24,6 +24,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -41,11 +42,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String[] ignoredPathsArray = Arrays.stream(ignoredPaths.split(","))
+                .map(String::trim)
+                .toArray(String[]::new);
+
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers(ignoredPaths)
+                        .requestMatchers(ignoredPathsArray)
                         .permitAll()
                         .anyRequest()
                         .authenticated())

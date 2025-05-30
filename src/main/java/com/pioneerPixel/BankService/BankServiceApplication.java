@@ -18,7 +18,7 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @SpringBootApplication
 public class BankServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BankServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BankServiceApplication.class, args);
+    }
 }

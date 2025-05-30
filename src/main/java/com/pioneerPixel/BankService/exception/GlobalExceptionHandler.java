@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Invalid password, please try again."));
+                .body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Invalid credentials, please try again."));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

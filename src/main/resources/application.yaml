@@ -39,7 +39,7 @@ spring:
       refresh-lifetime: 86400000
       auth-header: ${JWT_AUTH_HEADER:Authorization}
       bearer-prefix: ${JWT_BEARER_PREFIX:Bearer }
-      ignored-paths: ${JWT_IGNORED_PATHS:/v1/auth/**}
+      ignored-paths: ${JWT_IGNORED_PATHS:/v1/auth/**,/swagger-ui/**,/v3/api-docs/**,/swagger-ui.html}
       password-encoder-number-of-iterations: ${PASSWORD_ENCODER_ITERATIONS:12}
 
   elasticsearch:
